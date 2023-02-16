@@ -16,7 +16,7 @@ public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "member_id", nullable = false)
     private Long id;
 
     @Column(name = "user_id", nullable = false)
@@ -28,6 +28,8 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Meal> meals =new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 //    public MemberDTO toDTO() {
 //        return MemberDTO.builder()
