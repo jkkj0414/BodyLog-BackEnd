@@ -29,7 +29,7 @@ public class TokenProvider {
     private final long validityTime;
 
     public TokenProvider(
-            @Value("${JWT_SECRET_KEY}") String secretKey,
+            @Value("${jwt.secret}") String secretKey,
             @Value("${jwt.token-validity-in-milliseconds}") long validityTime) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
