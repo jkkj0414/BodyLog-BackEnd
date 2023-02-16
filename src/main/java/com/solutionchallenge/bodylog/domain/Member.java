@@ -1,9 +1,6 @@
 package com.solutionchallenge.bodylog.domain;
 
-
-import com.solutionchallenge.bodylog.domain.DTO.MemberDTO;
 import lombok.*;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
