@@ -18,11 +18,11 @@ public class Meal extends BaseTimeEntity{
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "type", nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
-    @Column(name = "quantitiy", nullable = false)
-    private String quantitiy;
+    @Enumerated(EnumType.STRING)
+    private Quantity quantity;
 
     @ManyToOne(targetEntity = Member.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
