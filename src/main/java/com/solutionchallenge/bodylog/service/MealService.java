@@ -21,6 +21,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -44,30 +46,7 @@ public class MealService {
 
     public Meal loadMealById(Long id) {
         return mealRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 날짜 --"));
-    }
-
-    // 전체 조회
-    @Transactional(readOnly = true)
-    public List<MealDTO> findAll() {
-        List<Meal> meals = mealRepository.findAll();
-
-        return meals.stream()
-                .map(Meal::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public List<MealDTO> findAllByMeal(Long mealId) {
-
-        Meal meal = mealRepository.findById(mealId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID의 Meal이 존재하지 않습니다."));
-
-        List<Meal> meals = mealRepository.findMealByMember(meal.getMember());
-
-        return meals.stream()
-                .map(Meal::toDTO)
-                .collect(Collectors.toList());
     }
 
     // 식사 하나 조회

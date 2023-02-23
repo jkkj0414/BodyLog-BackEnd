@@ -47,24 +47,10 @@ public class MemberService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         return tokenProvider.createToken(authentication);
     }
-
-    public Member findByUserId(String userId){
-
-        return memberRepository.findByUserId(userId).get();
-    }
     @Transactional
-    public List<MealDTO> findEntitiesById(Long id) {
+    public List<MealDTO> findMemberById(Long id) {
         List<Meal> findMeals = mealRepository.findMealByMemberId(id);
         return findMeals.stream().map(Meal::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public List<MemberDTO> findAllMember() {
-        List<Member> members = memberRepository.findAll();
-
-        return members.stream()
-                .map(Member::toDTO)
-                .collect(Collectors.toList());
+             .collect(Collectors.toList());
     }
 }

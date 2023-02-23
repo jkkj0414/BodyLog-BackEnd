@@ -31,6 +31,15 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+
+// [GET]    /meals/{id} -> 식사 부분조회
+// [GET]    /mebmer/{id}/meals -> 식사 전체 조회
+// [POST]   /meals/ -> 저장
+// [PATCH]  /meals/{id} -> 수정
+// [DELETE] /meals/{id} -> 삭제
+// [POST]   /join -> 회원가입
+// [POST]   /login -> 로그인
+// [POST]   /log-out -> 로그아웃
 @RequiredArgsConstructor
 @RestController
 public class MealController {
@@ -40,9 +49,10 @@ public class MealController {
     private  final MealService mealService;
     private  final MemberService memberService;
 
+    //member 식사 전체 조회
     @GetMapping("member/{id}/meals")
     public ResponseEntity<List<MealDTO>> findMealByMemberId(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(memberService.findEntitiesById(id));
+        return ResponseEntity.ok(memberService.findMemberById(id));
     }
 
     //저장
@@ -72,39 +82,12 @@ public class MealController {
         private Type type;
         private Quantity quantity;
     }
-
-    //meal 전체조회
-    @GetMapping("/main")
-    public ResponseEntity<List<MealDTO>> findAll() {
-        List<MealDTO> responses = mealService.findAll();
-
-        if (responses.isEmpty()) {
-            return ResponseEntity
-                    .noContent()
-                    .build();
-        }
-        return ResponseEntity.ok(responses);
-    }
-
-        @GetMapping("/main/{id}")
-        public ResponseEntity<List<MealDTO>> findAllMealId(@PathVariable("id") Long id) {
-                List<MealDTO> responses = mealService.findAllByMeal(id);
-
-                if (responses.isEmpty()) {
-                        return ResponseEntity
-                          .noContent()
-                           .build();
-        }
-        return ResponseEntity.ok(responses);
-    }
-
     //수정
     @PatchMapping("/meals/{id}")
     public ResponseEntity<MealDTO> updateByMeal(@PathVariable("id") Long id, @RequestBody MealDTO request) {
         MealDTO response = mealService.updateByMeal(id,request);
         return ResponseEntity.ok(response);
     }
-
     //삭제
     @DeleteMapping("/meals/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
@@ -115,7 +98,7 @@ public class MealController {
 
     // 하나만 조회
     @GetMapping("/meals/{id}")
-    public ResponseEntity<?> findByLuckyBag(@PathVariable("id") Long id) {
+    public ResponseEntity<?> findByMeal(@PathVariable("id") Long id) {
         return ResponseEntity.ok(mealService.findByMeal(id));
     }
 }
