@@ -1,5 +1,7 @@
 package com.solutionchallenge.bodylog.domain;
 
+import com.solutionchallenge.bodylog.domain.DTO.JoinDTO;
+import com.solutionchallenge.bodylog.domain.DTO.MemberDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,13 +30,15 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Meal> meals =new ArrayList<>();
 
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    public MemberDTO toDTO() {
-//        return MemberDTO.builder()
-//                .userid(userId)
-//                .password(userPassword)
-//                .build();
-//    }
+    public MemberDTO toDTO() {
+        return MemberDTO.builder()
+                .userid(userId)
+                .createdDate(createdDate)
+                .modifiedDate(modifiedDate)
+                .build();
+    }
 }

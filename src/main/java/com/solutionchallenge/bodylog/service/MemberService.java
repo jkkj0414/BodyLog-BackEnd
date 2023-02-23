@@ -1,21 +1,24 @@
 package com.solutionchallenge.bodylog.service;
 
-import com.solutionchallenge.bodylog.domain.DTO.JoinDTO;
-import com.solutionchallenge.bodylog.domain.DTO.LoginDTO;
-import com.solutionchallenge.bodylog.domain.DTO.MemberDTO;
-import com.solutionchallenge.bodylog.domain.DTO.TokenDTO;
+import com.solutionchallenge.bodylog.domain.DTO.*;
+import com.solutionchallenge.bodylog.domain.Meal;
+import com.solutionchallenge.bodylog.domain.Member;
+import com.solutionchallenge.bodylog.repository.MealRepository;
 import com.solutionchallenge.bodylog.repository.MemberRepository;
 import com.solutionchallenge.bodylog.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class MemberService {
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MealRepository mealRepository;
 
     @Transactional
     public void join(JoinDTO joinRequestDTO) {
@@ -44,4 +48,26 @@ public class MemberService {
         return tokenProvider.createToken(authentication);
     }
 
+    public Member findByUserId(String userId){
+
+        return memberRepository.findByUserId(userId).get();
+    }
+    @Transactional
+    public List<MealDTO> findEntitiesById(Long id) {
+        List<Meal> findMeals = mealRepository.findMealByMemberId(id);
+        return findMeals.stream().map(Meal::toDTO)
+                .collect(Collectors.toList());
+    }
+//    @Transactional(readOnly = true)
+//    public List<MemberDTO> findAllMember() {
+//            List<Member> members = memberRepository.findAll();
+//
+//            return members.stream()
+//                    .map(Member::toDTO)
+//                    .collect(Collectors.toList());
+//        }
+
 }
+
+
+

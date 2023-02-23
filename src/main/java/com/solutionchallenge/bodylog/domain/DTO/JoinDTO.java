@@ -4,12 +4,13 @@ import com.solutionchallenge.bodylog.domain.Member;
 import com.solutionchallenge.bodylog.domain.Role;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class JoinDTO {
     private String userId;
     private String userPassword;
     private String repeatedPassword;
-
     public Member toEntity() {
         return Member.builder()
                 .userId(userId)
