@@ -1,5 +1,6 @@
 package com.solutionchallenge.bodylog.service;
 
+import com.solutionchallenge.bodylog.domain.DTO.FindMealDTO;
 import com.solutionchallenge.bodylog.domain.DTO.MealDTO;
 import com.solutionchallenge.bodylog.domain.DTO.MemberDTO;
 import com.solutionchallenge.bodylog.domain.Meal;
@@ -25,14 +26,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MealService {
     private final MealRepository mealRepository;
-    private final JwtUserDetailsService jwtUserDetailsService;
 
-
-    @Transactional(readOnly = true)
-    public List<Meal> findMealByMember(Member member) {
-        List<Meal> meals = mealRepository.findMealByMember(member);
-        return meals;
-    }
+    // 수정
     @Transactional
     public MealDTO updateByMeal(Long id, MealDTO mealDTO){
         Meal meal = loadMealById(id);
@@ -40,6 +35,7 @@ public class MealService {
         return mealRepository.saveAndFlush(meal).toDTO();
     }
 
+    // 삭제
     @Transactional
     public void deleteById(Long id) {
         Meal meal = loadMealById(id);
@@ -51,6 +47,7 @@ public class MealService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 날짜 --"));
     }
 
+    // 전체 조회
     @Transactional(readOnly = true)
     public List<MealDTO> findAll() {
         List<Meal> meals = mealRepository.findAll();
@@ -72,5 +69,18 @@ public class MealService {
                 .map(Meal::toDTO)
                 .collect(Collectors.toList());
     }
-   }
 
+    // 식사 하나 조회
+    @Transactional(readOnly = true)
+    public FindMealDTO findByMeal(Long id) {
+        Meal meal = mealRepository.findById(id).get();
+        return FindMealDTO.builder()
+                .mealId(meal.getId())
+                .type(meal.getType())
+                .quantity(meal.getQuantity())
+                .createdDate(meal.getCreatedDate())
+                .modifiedDate(meal.getModifiedDate())
+                .MemberDTO(meal.toDTO().getMemberDTO())
+                .build();
+    }
+}

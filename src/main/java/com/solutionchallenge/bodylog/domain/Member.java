@@ -1,6 +1,5 @@
 package com.solutionchallenge.bodylog.domain;
 
-import com.solutionchallenge.bodylog.domain.DTO.JoinDTO;
 import com.solutionchallenge.bodylog.domain.DTO.MemberDTO;
 import lombok.*;
 
@@ -37,8 +36,6 @@ public class Member extends BaseTimeEntity {
     public MemberDTO toDTO() {
         return MemberDTO.builder()
                 .userid(userId)
-                .createdDate(createdDate)
-                .modifiedDate(modifiedDate)
                 .build();
     }
 }

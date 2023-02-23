@@ -31,17 +31,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-
-
-// [GET]   /main -> 모두 조회 ??
-// [GET]   /meals/{id} -> 부분조회 ??
-// [GET]   /mebmer/{id}/meals -> 내가 저장한 meal 조회 ??
-// [POST]   /meals/ -> 저장
-// [PATCH]  /meals/{id} -> 수정
-// [DELETE] /meals/{id} -> 삭제
-// [POST]   /join -> 회원가입
-// [POST]   /login -> 로그인
-// [POST]   /log-out -> 로그아웃 --> ** 해야할 것
 @RequiredArgsConstructor
 @RestController
 public class MealController {
@@ -85,23 +74,6 @@ public class MealController {
     }
 
     //meal 전체조회
-//    @GetMapping("/meals")
-//    public ResponseEntity<List<Meal>> findAll(@AuthenticationPrincipal UserDetails userDetails) {
-//        String userId = userDetails.getUsername();
-//        Member member = memberService.findByUserId(userId);
-//
-//        List<Meal> responses = mealService.findMealByMember(member);
-//
-//        if (responses.isEmpty()) {
-//            return ResponseEntity
-//                    .ok(null);
-//        }
-//
-//        return ResponseEntity.ok().body(responses);
-//    }
-
-
-    //-----------------------------???
     @GetMapping("/main")
     public ResponseEntity<List<MealDTO>> findAll() {
         List<MealDTO> responses = mealService.findAll();
@@ -126,7 +98,6 @@ public class MealController {
         return ResponseEntity.ok(responses);
     }
 
-//-----------------------------------???
     //수정
     @PatchMapping("/meals/{id}")
     public ResponseEntity<MealDTO> updateByMeal(@PathVariable("id") Long id, @RequestBody MealDTO request) {
@@ -140,5 +111,11 @@ public class MealController {
         mealService.deleteById(id);
         return ResponseEntity
                 .ok(null);
+    }
+
+    // 하나만 조회
+    @GetMapping("/meals/{id}")
+    public ResponseEntity<?> findByLuckyBag(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(mealService.findByMeal(id));
     }
 }

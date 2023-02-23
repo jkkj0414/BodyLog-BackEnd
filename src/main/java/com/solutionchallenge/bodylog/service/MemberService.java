@@ -58,16 +58,13 @@ public class MemberService {
         return findMeals.stream().map(Meal::toDTO)
                 .collect(Collectors.toList());
     }
-//    @Transactional(readOnly = true)
-//    public List<MemberDTO> findAllMember() {
-//            List<Member> members = memberRepository.findAll();
-//
-//            return members.stream()
-//                    .map(Member::toDTO)
-//                    .collect(Collectors.toList());
-//        }
 
+    @Transactional(readOnly = true)
+    public List<MemberDTO> findAllMember() {
+        List<Member> members = memberRepository.findAll();
+
+        return members.stream()
+                .map(Member::toDTO)
+                .collect(Collectors.toList());
+    }
 }
-
-
-

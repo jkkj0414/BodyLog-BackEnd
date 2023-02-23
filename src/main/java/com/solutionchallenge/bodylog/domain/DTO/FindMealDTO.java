@@ -1,22 +1,23 @@
 package com.solutionchallenge.bodylog.domain.DTO;
 
-
 import com.solutionchallenge.bodylog.domain.Quantity;
 import com.solutionchallenge.bodylog.domain.Type;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class MealDTO {
+public class FindMealDTO {
     private Long mealId;
     private Type type;
     private Quantity quantity;
-    private MemberDTO memberDTO;
     private LocalDateTime createdDate;;
     private LocalDateTime modifiedDate;
-
+    private MemberDTO MemberDTO;
 }

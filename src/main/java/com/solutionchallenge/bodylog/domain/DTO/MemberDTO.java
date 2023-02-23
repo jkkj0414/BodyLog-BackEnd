@@ -14,12 +14,4 @@ import java.util.List;
 @Builder
 public class MemberDTO {
     private String userid;
-    private String password;
-    private List<MealDTO> meal;
-
-
-    private LocalDateTime createdDate;;
-    private LocalDateTime modifiedDate;
-
 }
-
