@@ -2,7 +2,6 @@ package com.solutionchallenge.bodylog.controller;
 
 
 import com.solutionchallenge.bodylog.domain.DTO.MealDTO;
-import com.solutionchallenge.bodylog.domain.DTO.MemberDTO;
 import com.solutionchallenge.bodylog.domain.Meal;
 import com.solutionchallenge.bodylog.domain.Member;
 import com.solutionchallenge.bodylog.domain.Quantity;
@@ -14,21 +13,13 @@ import com.solutionchallenge.bodylog.service.MealService;
 import com.solutionchallenge.bodylog.service.MemberService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.type.DateType;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 

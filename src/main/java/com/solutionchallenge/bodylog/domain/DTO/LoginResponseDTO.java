@@ -6,10 +6,11 @@ import lombok.Data;
 
 import java.util.Date;
 
-@Data
 @Builder
+@Data
 @AllArgsConstructor
-public class TokenDTO {
+public class LoginResponseDTO {
+    Long id;
     private String grantType;
     private String accessToken;
     private String refreshToken;

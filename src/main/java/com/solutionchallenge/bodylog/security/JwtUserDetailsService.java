@@ -20,6 +20,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 해당 username이 없으면 404 에러코드와 메시지 전달
         return memberRepository.findByUserId(username)
                 .map(this::createUserDetails)
                 .orElseThrow(() -> new UsernameNotFoundException("해당하는 사용자를 찾을 수 없습니다."));
