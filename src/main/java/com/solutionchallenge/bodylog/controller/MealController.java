@@ -49,7 +49,7 @@ public class MealController {
     //저장
     @PostMapping("/meals")
     @Transactional
-    public ResponseEntity addMeal(HttpServletRequest request, @RequestBody TypeAndQuantityDto typeAndQuantityDto)  {
+    public ResponseEntity addMeal(HttpServletRequest request, @RequestBody MealDTO mealDTO)  {
         // 액세스토큰 가져오기
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION).split(" ")[1];
         // 액세스토큰으로 Authentication 객체 가져오기
@@ -59,20 +59,15 @@ public class MealController {
 
         // Member 가진 Meal List에 새로운 Meal을 추가해야 함
         Meal meal = Meal.builder()
-                .type(typeAndQuantityDto.getType())
-                .quantity(typeAndQuantityDto.getQuantity())
+                .type(mealDTO.getType())
+                .quantity(mealDTO.getQuantity())
                 .member(member) // 어떤 member가 가진 Meal인지
+                .selectedDate(mealDTO.getSelectedDate())
                 .build();
-
         mealRepository.save(meal);
         return ResponseEntity.ok("ok");
     }
 
-    @Getter
-    static class TypeAndQuantityDto{
-        private Type type;
-        private Quantity quantity;
-    }
     //수정
     @PatchMapping("/meals/{id}")
     public ResponseEntity<MealDTO> updateByMeal(@PathVariable("id") Long id, @RequestBody MealDTO request) {

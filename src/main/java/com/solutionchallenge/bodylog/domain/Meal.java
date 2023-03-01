@@ -2,8 +2,10 @@ package com.solutionchallenge.bodylog.domain;
 
 import com.solutionchallenge.bodylog.domain.DTO.MealDTO;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "meal")
@@ -11,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Getter
-public class Meal extends BaseTimeEntity{
+public class Meal{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "meal_id", nullable = false)
@@ -27,19 +29,22 @@ public class Meal extends BaseTimeEntity{
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(nullable = false)
+    @DateTimeFormat(pattern = "MM-DD-YYYY")
+    private LocalDate selectedDate;
+
     public MealDTO toDTO(){
         return MealDTO.builder()
                 .mealId(id)
                 .type(type)
                 .quantity(quantity)
-                .createdDate(createdDate)
-                .modifiedDate(modifiedDate)
-                .userId(member.getUserId())
+                .selectedDate(selectedDate)
                 .build();
     }
 
     public void update(MealDTO mealDTO) {
         this.type= mealDTO.getType();
         this.quantity=mealDTO.getQuantity();
+        this.selectedDate=mealDTO.getSelectedDate();
     }
 }

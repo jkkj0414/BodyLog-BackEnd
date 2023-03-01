@@ -40,15 +40,13 @@ public class MealService {
 
     // 식사 하나 조회
     @Transactional(readOnly = true)
-    public FindMealDTO findByMeal(Long id) {
+    public MealDTO findByMeal(Long id) {
         Meal meal = mealRepository.findById(id).get();
-        return FindMealDTO.builder()
+        return   MealDTO.builder()
                 .mealId(meal.getId())
                 .type(meal.getType())
                 .quantity(meal.getQuantity())
-                .createdDate(meal.getCreatedDate())
-                .modifiedDate(meal.getModifiedDate())
-                .userId(meal.getMember().getUserId())
+                .selectedDate(meal.getSelectedDate())
                 .build();
     }
 }
