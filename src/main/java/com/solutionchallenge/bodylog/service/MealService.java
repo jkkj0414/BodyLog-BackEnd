@@ -2,25 +2,14 @@ package com.solutionchallenge.bodylog.service;
 
 import com.solutionchallenge.bodylog.domain.DTO.FindMealDTO;
 import com.solutionchallenge.bodylog.domain.DTO.MealDTO;
-import com.solutionchallenge.bodylog.domain.DTO.MemberDTO;
 import com.solutionchallenge.bodylog.domain.Meal;
-import com.solutionchallenge.bodylog.domain.Member;
 import com.solutionchallenge.bodylog.repository.MealRepository;
-import com.solutionchallenge.bodylog.security.JwtUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.security.Principal;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-
 
 
 @Service
@@ -59,7 +48,7 @@ public class MealService {
                 .quantity(meal.getQuantity())
                 .createdDate(meal.getCreatedDate())
                 .modifiedDate(meal.getModifiedDate())
-                .MemberDTO(meal.toDTO().getMemberDTO())
+                .userId(meal.getMember().getUserId())
                 .build();
     }
 }

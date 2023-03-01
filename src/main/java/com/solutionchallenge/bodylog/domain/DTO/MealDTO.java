@@ -15,7 +15,7 @@ public class MealDTO {
     private Long mealId;
     private Type type;
     private Quantity quantity;
-    private MemberDTO memberDTO;
+    private String userId;
     private LocalDateTime createdDate;;
     private LocalDateTime modifiedDate;
 

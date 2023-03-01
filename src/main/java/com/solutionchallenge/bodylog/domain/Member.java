@@ -1,6 +1,5 @@
 package com.solutionchallenge.bodylog.domain;
 
-import com.solutionchallenge.bodylog.domain.DTO.MemberDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,9 +32,9 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public MemberDTO toDTO() {
-        return MemberDTO.builder()
-                .userid(userId)
-                .build();
-    }
+//    public MemberDTO toDTO() {
+//        return MemberDTO.builder()
+//                .userid(userId)
+//                .build();
+//    }
 }

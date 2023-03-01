@@ -19,5 +19,5 @@ public class FindMealDTO {
     private Quantity quantity;
     private LocalDateTime createdDate;;
     private LocalDateTime modifiedDate;
-    private MemberDTO MemberDTO;
+    private String userId;
 }

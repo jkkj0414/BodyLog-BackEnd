@@ -34,7 +34,7 @@ public class Meal extends BaseTimeEntity{
                 .quantity(quantity)
                 .createdDate(createdDate)
                 .modifiedDate(modifiedDate)
-                .memberDTO(member.toDTO())
+                .userId(member.getUserId())
                 .build();
     }
 
