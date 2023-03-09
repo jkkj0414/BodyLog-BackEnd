@@ -1,5 +1,6 @@
 package com.solutionchallenge.bodylog.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.solutionchallenge.bodylog.domain.DTO.MealDTO;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,7 +31,9 @@ public class Meal{
     private Member member;
 
     @Column(nullable = false)
-    @DateTimeFormat(pattern = "MM-DD-YYYY")
+    @DateTimeFormat(pattern = "MM-dd-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy", timezone = "Asia/Seoul")
+    // 여기서 원래 locale 이 아니라 timezone 이었음
     private LocalDate selectedDate;
 
     public MealDTO toDTO(){
