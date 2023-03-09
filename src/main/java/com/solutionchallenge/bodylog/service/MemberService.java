@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-
 import java.security.Principal;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -35,9 +34,9 @@ public class MemberService {
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MealRepository mealRepository;
     private final RedisTemplate redisTemplate;
 
+    //회원가입
     @Transactional
     public void join(JoinDTO joinRequestDTO) {
         if(memberRepository.findByUserId(joinRequestDTO.getUserId()).isPresent()) {
@@ -50,6 +49,7 @@ public class MemberService {
         memberRepository.save(joinRequestDTO.toEntity());
     }
 
+    //로그인
     @Transactional
     public TokenDTO login(LoginDTO loginRequestDTO) {
         // 1. ID/PW 를 기반으로 Authentication 객체 생성
@@ -67,12 +67,8 @@ public class MemberService {
         // 4. 로그인 성공하면 토큰DTO에 제대로 들어감
         return tokenDTO;
     }
-    @Transactional
-    public List<MealDTO> findMemberById(Long id) {
-        List<Meal> findMeals = mealRepository.findMealByMemberId(id);
-        return findMeals.stream().map(Meal::toDTO)
-                .collect(Collectors.toList());
-    }
+
+    //로그아웃
     public ResponseEntity<?> logout(LogoutDTO logoutDTO) {
         log.info("로그아웃 로직");
         //accessToken 검증
@@ -117,19 +113,12 @@ public class MemberService {
         Member findMember = memberRepository.findByUserId(loginDTO.getUserId()).get();
         return findMember.getId();
     }
-
-    @Transactional
-    public JoinDTO findByUserMealId(Principal principal, String user_id) {
-        if(!user_id.equals(principal.getName()))
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신만 볼 수 있습니다.");
-        Member member = findEntityByMemberId(user_id);
-        return member.toJoinEntity();
-    }
-
-
     Member findEntityByMemberId(String user_id){
         return memberRepository.findByUserId(user_id)
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 사용자를 찾을 수 없습니다."));
     }
+//    public Member findById(String userid){
+//        return memberRepository.findByUserId(userid).get();
+//    }
 
 }

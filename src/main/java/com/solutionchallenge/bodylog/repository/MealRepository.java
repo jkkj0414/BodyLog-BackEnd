@@ -4,10 +4,10 @@ import com.solutionchallenge.bodylog.domain.Meal;
 import com.solutionchallenge.bodylog.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface MealRepository extends JpaRepository<Meal, Long> {
-    List<Meal> findMealByMemberId(Long memberId);
-    List<Meal> findAllByMember(Member member);
+    List<Meal> findMealByMemberId(String userId);
+    Optional<Meal> findById(Long Id);
 }

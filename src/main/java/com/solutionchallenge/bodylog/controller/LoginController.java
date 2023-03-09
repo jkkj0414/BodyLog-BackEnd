@@ -42,5 +42,4 @@ public class LoginController {
         log.info("토큰 재발급");
         return memberService.reissue(tokenDTO);
     }
-
 }

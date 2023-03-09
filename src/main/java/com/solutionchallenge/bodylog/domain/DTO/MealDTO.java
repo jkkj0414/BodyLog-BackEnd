@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MealDTO {
+
     private Long mealId;
     private Type type;
     private Quantity quantity;
@@ -26,5 +27,4 @@ public class MealDTO {
     )
     private LocalDate selectedDate;
     private String userId;
-
 }
