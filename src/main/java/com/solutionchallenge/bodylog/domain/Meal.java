@@ -41,9 +41,9 @@ public class Meal{
                 .type(type)
                 .quantity(quantity)
                 .selectedDate(selectedDate)
+                .userId(getMember().getUserId())
                 .build();
     }
-
     public void update(MealDTO mealDTO) {
         this.type= mealDTO.getType();
         this.quantity=mealDTO.getQuantity();

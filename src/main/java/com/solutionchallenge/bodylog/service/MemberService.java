@@ -18,7 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.server.ResponseStatusException;
 
+
+import java.security.Principal;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -68,7 +71,7 @@ public class MemberService {
     public List<MealDTO> findMemberById(Long id) {
         List<Meal> findMeals = mealRepository.findMealByMemberId(id);
         return findMeals.stream().map(Meal::toDTO)
-             .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
     public ResponseEntity<?> logout(LogoutDTO logoutDTO) {
         log.info("로그아웃 로직");
@@ -113,6 +116,20 @@ public class MemberService {
     public Long findId(LoginDTO loginDTO) {
         Member findMember = memberRepository.findByUserId(loginDTO.getUserId()).get();
         return findMember.getId();
+    }
+
+    @Transactional
+    public JoinDTO findByUserMealId(Principal principal, String user_id) {
+        if(!user_id.equals(principal.getName()))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신만 볼 수 있습니다.");
+        Member member = findEntityByMemberId(user_id);
+        return member.toJoinEntity();
+    }
+
+
+    Member findEntityByMemberId(String user_id){
+        return memberRepository.findByUserId(user_id)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 사용자를 찾을 수 없습니다."));
     }
 
 }

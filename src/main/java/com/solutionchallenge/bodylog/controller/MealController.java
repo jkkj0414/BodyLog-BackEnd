@@ -1,95 +1,75 @@
 package com.solutionchallenge.bodylog.controller;
 
 
+import com.solutionchallenge.bodylog.domain.DTO.JoinDTO;
 import com.solutionchallenge.bodylog.domain.DTO.MealDTO;
 import com.solutionchallenge.bodylog.domain.Meal;
-import com.solutionchallenge.bodylog.domain.Member;
-import com.solutionchallenge.bodylog.domain.Quantity;
-import com.solutionchallenge.bodylog.domain.Type;
-import com.solutionchallenge.bodylog.repository.MealRepository;
-import com.solutionchallenge.bodylog.repository.MemberRepository;
-import com.solutionchallenge.bodylog.security.TokenProvider;
 import com.solutionchallenge.bodylog.service.MealService;
 import com.solutionchallenge.bodylog.service.MemberService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.type.DateType;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
+import java.security.Principal;
 import java.util.List;
 
-
-// [GET]    /meals/{id} -> 식사 부분조회
-// [GET]    /mebmer/{id}/meals -> 식사 전체 조회
-// [POST]   /meals/ -> 저장
-// [PATCH]  /meals/{id} -> 수정
-// [DELETE] /meals/{id} -> 삭제
-// [POST]   /join -> 회원가입
-// [POST]   /login -> 로그인
-// [POST]   /log-out -> 로그아웃
 @RequiredArgsConstructor
 @RestController
 public class MealController {
-    private final MemberRepository memberRepository;
-    private final TokenProvider tokenProvider;
-    private final MealRepository mealRepository;
     private  final MealService mealService;
     private  final MemberService memberService;
 
     //member 식사 전체 조회
-    @GetMapping("member/{id}/meals")
-    public ResponseEntity<List<MealDTO>> findMealByMemberId(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(memberService.findMemberById(id));
-    }
+//    @GetMapping("member/{id}/meals")
+//    public ResponseEntity<List<MealDTO>> findMealByMemberId(
+//            @PathVariable("id") Long id) {
+//        return ResponseEntity.ok(memberService.findMemberById(id));
+//    }
 
+    //member 식사 전체 조회
+    @GetMapping("/{user_id}")
+    public ResponseEntity<JoinDTO> findAllByMemberId(
+            Principal principal,
+            @PathVariable("user_id") String userId) {
+
+        JoinDTO member = memberService.findByUserMealId(principal,userId);
+        List<MealDTO> responses = mealService.findAllByMemberId(principal, userId);
+        member.setMealDTOS(responses);
+
+        return ResponseEntity.ok(member);
+    }
     //저장
-    @PostMapping("/meals")
-    @Transactional
-    public ResponseEntity addMeal(HttpServletRequest request, @RequestBody MealDTO mealDTO)  {
-        // 액세스토큰 가져오기
-        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION).split(" ")[1];
-        // 액세스토큰으로 Authentication 객체 가져오기
-        Authentication authentication = tokenProvider.getAuthentication(accessToken);
-        // userId로 Member 객체 찾기
-        Member member = memberRepository.findByUserId(authentication.getName()).get();
+    @PostMapping("/{userId}/add")
+    public ResponseEntity<String> addMeal(
+            Principal principal,
+            @PathVariable("userId") String userId,
+            @RequestBody MealDTO request) {
 
-        // Member 가진 Meal List에 새로운 Meal을 추가해야 함
-        Meal meal = Meal.builder()
-                .type(mealDTO.getType())
-                .quantity(mealDTO.getQuantity())
-                .member(member) // 어떤 member가 가진 Meal인지
-                .selectedDate(mealDTO.getSelectedDate())
-                .build();
-        mealRepository.save(meal);
-        return ResponseEntity.ok("ok");
+        Meal response = mealService.addByMeal(principal, userId, request);
+        return ResponseEntity.ok("meal save success");
     }
-
     //수정
-    @PatchMapping("/meals/{id}")
-    public ResponseEntity<MealDTO> updateByMeal(@PathVariable("id") Long id, @RequestBody MealDTO request) {
-        MealDTO response = mealService.updateByMeal(id,request);
-        return ResponseEntity.ok(response);
+    @PatchMapping("/{userId}/{mealId}/update")
+    public ResponseEntity<String> updateByMeal(Principal principal,
+                                               @PathVariable("userId") String userId,
+                                               @PathVariable("mealId") Long mealId,
+                                               @RequestBody MealDTO request) {
+
+        MealDTO response = mealService.updateByMeal(principal,userId,mealId,request);
+        return ResponseEntity.ok("meal update success");
     }
     //삭제
-    @DeleteMapping("/meals/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
-        mealService.deleteById(id);
-        return ResponseEntity
-                .ok(null);
+    @DeleteMapping("/{userId}/{mealId}/delete")
+    public ResponseEntity<String> deleteById(Principal principal,
+                                             @PathVariable("userId") String userId,
+                                             @PathVariable("mealId") Long mealId) {
+        mealService.deleteById(principal, userId, mealId);
+        return ResponseEntity.ok("meal delete success");
     }
 
-    // 하나만 조회
-    @GetMapping("/meals/{id}")
-    public ResponseEntity<?> findByMeal(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(mealService.findByMeal(id));
-    }
+//    // 하나만 조회
+//    @GetMapping("/meals/{id}")
+//    public ResponseEntity<?> findByMeal(@PathVariable("id") Long id) {
+//        return ResponseEntity.ok(mealService.findByMeal(id));
+//    }
 }

@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/login", "/join","/").permitAll()
                 .antMatchers("/log-out").authenticated()
-                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/user/**","/@**/add","/**/**/update", "/api/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

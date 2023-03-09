@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface MealRepository extends JpaRepository<Meal, Long> {
     List<Meal> findMealByMemberId(Long memberId);
+    List<Meal> findAllByMember(Member member);
 }

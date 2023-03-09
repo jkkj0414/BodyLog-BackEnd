@@ -25,4 +25,6 @@ public class MealDTO {
             locale = "Asia/Seoul"
     )
     private LocalDate selectedDate;
+    private String userId;
+
 }
