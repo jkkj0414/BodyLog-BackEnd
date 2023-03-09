@@ -10,7 +10,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 public class LoginResponseDTO {
-    Long id;
+    Long memberId;
     private String grantType;
     private String accessToken;
     private String refreshToken;

@@ -33,7 +33,6 @@ public class Meal{
     @Column(nullable = false)
     @DateTimeFormat(pattern = "MM-dd-yyyy")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy", timezone = "Asia/Seoul")
-    // 여기서 원래 locale 이 아니라 timezone 이었음
     private LocalDate selectedDate;
 
     public MealDTO toDTO(){

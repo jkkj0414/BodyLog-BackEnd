@@ -23,7 +23,7 @@ public class LoginController {
         TokenDTO tokenDTO = memberService.login(loginRequestDTO);
         Long id = memberService.findId(loginRequestDTO);
 
-        return LoginResponseDTO.builder().id(id)
+        return LoginResponseDTO.builder().memberId(id)
                 .grantType(tokenDTO.getGrantType())
                 .accessToken(tokenDTO.getAccessToken())
                 .refreshToken(tokenDTO.getRefreshToken())
