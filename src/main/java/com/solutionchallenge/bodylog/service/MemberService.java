@@ -1,7 +1,6 @@
 package com.solutionchallenge.bodylog.service;
 
 import com.solutionchallenge.bodylog.domain.DTO.*;
-import com.solutionchallenge.bodylog.domain.Meal;
 import com.solutionchallenge.bodylog.domain.Member;
 import com.solutionchallenge.bodylog.repository.MealRepository;
 import com.solutionchallenge.bodylog.repository.MemberRepository;
@@ -21,9 +20,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -34,6 +31,7 @@ public class MemberService {
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MealRepository mealRepository;
     private final RedisTemplate redisTemplate;
 
     //회원가입
@@ -113,12 +111,20 @@ public class MemberService {
         Member findMember = memberRepository.findByUserId(loginDTO.getUserId()).get();
         return findMember.getId();
     }
-    Member findEntityByMemberId(String user_id){
+    public Member findEntityByMemberId(String user_id){
         return memberRepository.findByUserId(user_id)
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 사용자를 찾을 수 없습니다."));
     }
-//    public Member findById(String userid){
-//        return memberRepository.findByUserId(userid).get();
-//    }
+
+
+    //{userId}부분에 자신의 userid가 아닌 다른 아이디를 입력했을 경우 -> "자신만 볼 수 있습니다."
+    @Transactional
+    public JoinDTO findByUserMealId(Principal principal, String user_id) {
+        if(!user_id.equals(principal.getName()))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신만 볼 수 있습니다.");
+
+        Member member = findEntityByMemberId(user_id);
+        return member.toJoinEntity();
+    }
 
 }

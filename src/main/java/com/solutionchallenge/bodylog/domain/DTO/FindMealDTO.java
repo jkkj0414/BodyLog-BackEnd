@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,7 +18,5 @@ public class FindMealDTO {
     private Long mealId;
     private Type type;
     private Quantity quantity;
-    private LocalDateTime createdDate;;
-    private LocalDateTime modifiedDate;
-    private String userId;
+    private LocalDate selectedDate;
 }

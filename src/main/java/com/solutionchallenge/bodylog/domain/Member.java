@@ -1,7 +1,6 @@
 package com.solutionchallenge.bodylog.domain;
 
 import com.solutionchallenge.bodylog.domain.DTO.JoinDTO;
-import com.solutionchallenge.bodylog.domain.DTO.MealDTO;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,4 +71,12 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
+    public JoinDTO toJoinEntity() {
+        return JoinDTO.builder()
+                .userId(userId)
+                .build();
+    }
+
 }
