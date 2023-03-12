@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://localhost:8080",
                         "http://localhost:8443",
-                        "http://bodylog1.duckdns.org"
+                        "https://bodylog1.duckdns.org"
                 )
                 .allowedMethods(HttpMethod.GET.name(),
                         HttpMethod.POST.name(),
