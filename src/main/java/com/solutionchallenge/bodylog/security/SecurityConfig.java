@@ -10,12 +10,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
+
 import java.util.List;
 
 @Configuration
@@ -30,6 +32,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -37,23 +41,19 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/login", "/join","/").permitAll()
                 .antMatchers("/log-out").authenticated()
-//               .antMatchers("/user/**","/@**/add","/**/**/update", "/api/**","/").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/user/**","/**/add","/**/**/update","/**/**/delete", "/api/**/**/**","/").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JwtAuthFilter(tokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
-                .cors().configurationSource(configurationSource());
+                .addFilterBefore(new JwtAuthFilter(tokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-        @Bean
-        public CorsConfigurationSource configurationSource() {
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOriginPatterns(List.of("http://localhost:3000"));
-        configuration.setAllowedOriginPatterns(List.of("http://localhost:8080"));
-        configuration.setAllowedOriginPatterns(List.of("http://localhost:8080"));
-        configuration.setAllowedOriginPatterns(List.of("https://bodylog1.duckdns.org"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("Access-Control-Allow-Credentials", "Authorization", "Set-Cookie"));
@@ -64,7 +64,8 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
 
         return source;
-}
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
