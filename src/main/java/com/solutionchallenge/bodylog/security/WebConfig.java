@@ -18,7 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://localhost:8080",
                         "http://localhost:8443",
                         "http://localhost:3000",
-                        "https://bodylog1.duckdns.org"
+                        "https://bodylog1.duckdns.org",
+                        "https://flog-tau.vercel.app"
                 )
                 .allowedMethods(
                         HttpMethod.GET.name(),
