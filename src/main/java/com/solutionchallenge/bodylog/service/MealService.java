@@ -35,6 +35,13 @@ public class MealService {
                     "자신의 것만 등록이 가능합니다.");
         Member member = findEntityByMemberId(user_Id);
 
+        List<Meal> existingMeals = mealRepository.findBySelectedDateAndMember(mealDTO.getSelectedDate(), member);
+
+        if (!existingMeals.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "같은 날짜에 이미 데이터가 존재합니다.");
+        }
+
         Meal meal = Meal.builder()
                 .type(mealDTO.getType())
                 .quantity(mealDTO.getQuantity())
